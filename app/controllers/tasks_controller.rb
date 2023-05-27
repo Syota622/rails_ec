@@ -6,7 +6,7 @@ class TasksController < ApplicationController
   # GET /tasks or /tasks.json
   def index
     @tasks = Task.all
-    @product = Product.first
+    @products = Product.all
   end
 
   # GET /tasks/1 or /tasks/1.json
