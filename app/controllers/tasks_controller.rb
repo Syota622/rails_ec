@@ -5,7 +5,7 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
+    # @tasks = Task.all
     @products = Product.all
   end
 
@@ -62,7 +62,9 @@ class TasksController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_task
-    @task = Task.find(params[:id])
+    # @task = Task.find(params[:id])
+    @product = Product.find(params[:id])
+    @products = Product.all
   end
 
   # Only allow a list of trusted parameters through.
