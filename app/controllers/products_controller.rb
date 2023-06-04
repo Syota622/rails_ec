@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 class ProductsController < ApplicationController
-
   # GET /tasks or /tasks.json
   def index
     @products = Product.all
   end
 
   # GET /tasks/1 or /tasks/1.json
-  def show; 
+  def show
     set_task
   end
 
