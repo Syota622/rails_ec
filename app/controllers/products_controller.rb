@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ProductsController < ApplicationController
-  before_action :set_task
 
   # GET /tasks or /tasks.json
   def index
@@ -9,7 +8,9 @@ class ProductsController < ApplicationController
   end
 
   # GET /tasks/1 or /tasks/1.json
-  def show; end
+  def show; 
+    set_task
+  end
 
   private
 
