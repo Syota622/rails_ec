@@ -1,8 +1,14 @@
 # frozen_string_literal: true
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+
+# seeds.rb
+
+# 商品データを作成
+8.times do |i|
+  product = Product.create(name: "商品名#{i}", description: "商品の説明#{i}")
+  product.image.attach(
+    io: File.open(
+      Rails.root.join('app', 'assets', 'images', 'seeds', "image#{i}.png")
+    ),
+    filename: "image#{i}.png", content_type: 'image/png'
+  )
+end
