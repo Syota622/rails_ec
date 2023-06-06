@@ -16,6 +16,6 @@ class ProductsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_task
     @product = Product.find(params[:id])
-    @products = Product.all
+    @products = Product.order(created_at: :desc).limit(4)
   end
 end
