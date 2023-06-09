@@ -1,6 +1,22 @@
-<h1>New task</h1>
-<%= render "form", task: @task %>
-<br>
-<div>
-  <%= link_to "Back to tasks", tasks_path %>
-</div>
+<h1>新規に商品を登録</h1>
+<%= form_for @product, url: admin_products_path, html: { multipart: true } do |form| %>
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+  <div>
+    <%= form.label :description %>
+    <%= form.text_field :description %>
+  </div>
+  <div>
+    <%= form.label :price %>
+    <%= form.text_field :price %>
+  </div>
+  <div class="field">
+    <%= form.label :image %>
+    <%= form.file_field :image %>
+  </div>
+  <div>
+    <%= form.submit '商品登録' %>
+  </div>
+<% end %>
