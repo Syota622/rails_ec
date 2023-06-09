@@ -1,4 +1,12 @@
 class Admin::ProductsController < ApplicationController
+  before_action :authenticate
+
+  def authenticate
+    authenticate_or_request_with_http_basic do |username, password|
+      username == 'admin' && password == 'pw'
+    end
+  end
+
   # 商品一覧
   def index
     @products = Product.all
@@ -19,7 +27,7 @@ class Admin::ProductsController < ApplicationController
     @product.image.attach(params[:product][:image]) # 画像をアタッチする
 
     if @product.save
-      redirect_to admin_product_path(@product)
+      redirect_to admin_product_path(@product)  
     else
       render :new
     end
