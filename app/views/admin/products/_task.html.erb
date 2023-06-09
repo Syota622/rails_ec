@@ -43,8 +43,10 @@
                 </div>
                 <!-- Product actions-->
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                  <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">編集</a></div>
-                  <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">削除</a></div>
+                  <div class="text-center d-flex justify-content-between">
+                      <%= link_to "編集", edit_admin_product_path(product), class: "btn btn-primary" %>
+                      <a class="btn btn-outline-dark mt-auto mx-1" href="#">削除</a>
+                  </div>
                 </div>
               </div>
             </div>

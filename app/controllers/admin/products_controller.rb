@@ -24,9 +24,20 @@ class Admin::ProductsController < ApplicationController
       render :new
     end
   end
-
+  
   # 商品編集
   def edit
+    @product = Product.find(params[:id])
+  end
+
+  def update
+    @product = Product.find(params[:id])
+
+    if @product.update(product_params)
+      redirect_to admin_product_path(@product), notice: '商品が更新されました。'
+    else
+      render :edit
+    end
   end
 
   # 商品削除
