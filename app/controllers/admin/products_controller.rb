@@ -2,14 +2,8 @@
 
 module Admin
   class ProductsController < ApplicationController
-    before_action :basic_auth
+    before_action :basic_auth, only: %i[create destroy edit index new show update]
     before_action :set_product, only: %i[show edit update destroy]
-
-    def basic_auth
-      authenticate_or_request_with_http_basic do |username, password|
-        username == 'admin' && password == 'pw'
-      end
-    end
 
     # 商品一覧
     def index
@@ -55,6 +49,12 @@ module Admin
     end
 
     private
+
+    def basic_auth
+      authenticate_or_request_with_http_basic do |username, password|
+        username == 'admin' && password == 'pw'
+      end
+    end
 
     def set_product
       @product = Product.find(params[:id])
