@@ -2,9 +2,10 @@
 
 module Admin
   class ProductsController < ApplicationController
-    before_action :authenticate
+    before_action :basic_auth
+    before_action :set_product, only: %i[show edit update destroy]
 
-    def authenticate
+    def basic_auth
       authenticate_or_request_with_http_basic do |username, password|
         username == 'admin' && password == 'pw'
       end
@@ -16,7 +17,7 @@ module Admin
     end
 
     def show
-      set_task
+      @products = Product.order(created_at: :desc).limit(4)
     end
 
     # 商品登録
@@ -37,13 +38,9 @@ module Admin
     end
 
     # 商品編集
-    def edit
-      @product = Product.find(params[:id])
-    end
+    def edit; end
 
     def update
-      @product = Product.find(params[:id])
-
       if @product.update(product_params)
         redirect_to admin_product_path(@product)
       else
@@ -53,16 +50,14 @@ module Admin
 
     # 商品削除
     def destroy
-      @product = Product.find(params[:id])
       @product.destroy
       redirect_to admin_products_path
     end
 
     private
 
-    def set_task
+    def set_product
       @product = Product.find(params[:id])
-      @products = Product.order(created_at: :desc).limit(4)
     end
 
     def product_params
