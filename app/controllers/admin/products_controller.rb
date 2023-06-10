@@ -2,7 +2,7 @@
 
 module Admin
   class ProductsController < ApplicationController
-    before_action :basic_auth, only: %i[create destroy edit index new show update]
+    before_action :basic_auth
     before_action :set_product, only: %i[show edit update destroy]
 
     # 商品一覧
