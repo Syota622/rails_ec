@@ -1,9 +1,7 @@
 <div style="display: flex; justify-content: center;">
   <div style="max-width: 500px;">
     <h1>商品を編集</h1>
-      
     <%= form_with model: @product, url: admin_product_path(@product), method: :patch, html: { multipart: true } do |form| %>
-  
       <%# 更新ボタンをクリックした時にエラーメッセージを表示する  %>
       <% if @errors.any? %>
         <div id="error_explanation">
@@ -15,7 +13,6 @@
           </ul>
         </div>
       <% end %>
-  
       <div>
         <%= form.label :name %>
         <%= form.text_field :name %>

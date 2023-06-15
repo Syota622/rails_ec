@@ -34,7 +34,7 @@ module Admin
     end
 
     # 商品編集
-    def edit; 
+    def edit
       @errors = []
     end
 

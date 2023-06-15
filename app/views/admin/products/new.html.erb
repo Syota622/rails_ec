@@ -1,9 +1,7 @@
 <div style="display: flex; justify-content: center;">
   <div style="max-width: 500px;">
     <h1>新規に商品を登録</h1>
-      
     <%= form_for @product, url: admin_products_path, html: { multipart: true } do |form| %>
-  
       <%# 商品登録ボタンをクリックした時にエラーメッセージを表示する  %>
       <% if @errors.any? %>
         <div id="error_explanation">
@@ -15,7 +13,6 @@
           </ul>
         </div>
       <% end %>
-  
       <div>
         <%= form.label :name %>
         <%= form.text_field :name %>
