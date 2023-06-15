@@ -1,22 +1,40 @@
-<h1>新規に商品を登録</h1>
-<%= form_for @product, url: admin_products_path, html: { multipart: true } do |form| %>
-  <div>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+<div style="display: flex; justify-content: center;">
+  <div style="max-width: 500px;">
+    <h1>新規に商品を登録</h1>
+      
+    <%= form_for @product, url: admin_products_path, html: { multipart: true } do |form| %>
+  
+      <%# 商品登録ボタンをクリックした時にエラーメッセージを表示する  %>
+      <% if @errors.any? %>
+        <div id="error_explanation">
+          <h2>登録に失敗しました</h2>
+          <ul>
+            <% @errors.each do |error| %>
+              <li><%= error %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+  
+      <div>
+        <%= form.label :name %>
+        <%= form.text_field :name %>
+      </div>
+      <div>
+        <%= form.label :description %>
+        <%= form.text_field :description %>
+      </div>
+      <div>
+        <%= form.label :price %>
+        <%= form.text_field :price %>
+      </div>
+      <div class="field">
+        <%= form.label :image %>
+        <%= form.file_field :image %>
+      </div>
+      <div>
+        <%= form.submit '商品登録', class: "btn btn-primary" %>
+      </div>
+    <% end %>
   </div>
-  <div>
-    <%= form.label :description %>
-    <%= form.text_field :description %>
-  </div>
-  <div>
-    <%= form.label :price %>
-    <%= form.text_field :price %>
-  </div>
-  <div class="field">
-    <%= form.label :image %>
-    <%= form.file_field :image %>
-  </div>
-  <div>
-    <%= form.submit '商品登録' %>
-  </div>
-<% end %>
+</div>
