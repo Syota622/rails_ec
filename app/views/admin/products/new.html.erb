@@ -1,0 +1,37 @@
+<div style="display: flex; justify-content: center;">
+  <div style="max-width: 500px;">
+    <h1>新規に商品を登録</h1>
+    <%= form_for @product, url: admin_products_path, html: { multipart: true } do |form| %>
+      <div>
+        <%= form.label :名前 %>
+        <%= form.text_field :name %>
+        <% if @product.errors[:name].any? %>
+          <div style="color: red;"><%= @product.errors[:name].join(",") %></div>
+        <% end %>
+      </div>
+      <div>
+        <%= form.label :説明 %>
+        <%= form.text_field :description %>
+        <% if @product.errors[:description].any? %>
+          <div style="color: red;"><%= @product.errors[:description].join(",") %></div>
+        <% end %>
+      </div>
+      <div>
+        <%= form.label :価格 %>
+        <%= form.text_field :price %>
+        <% if @product.errors[:price].any? %>
+          <div style="color: red;"><%= @product.errors[:price].join(",") %></div>
+        <% end %>
+        <div class="field">
+          <%= form.label :画像 %>
+          <%= form.file_field :image %>
+          <% if @product.errors[:image].any? %>
+            <div style="color: red;"><%= @product.errors[:image].join(",") %></div>
+          <% end %>
+        </div>
+        <div>
+          <%= form.submit '商品登録', class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
