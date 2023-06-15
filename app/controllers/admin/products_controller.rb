@@ -16,7 +16,6 @@ module Admin
 
     # 商品登録
     def new
-      @errors = []
       @product = Product.new
     end
 
@@ -28,21 +27,17 @@ module Admin
       if @product.save
         redirect_to admin_product_path(@product)
       else
-        @errors = @product.errors.full_messages
         render :new, status: :unprocessable_entity
       end
     end
 
     # 商品編集
-    def edit
-      @errors = []
-    end
+    def edit; end
 
     def update
       if @product.update(product_params)
         redirect_to admin_product_path(@product)
       else
-        @errors = @product.errors.full_messages
         render :edit, status: :unprocessable_entity
       end
     end
