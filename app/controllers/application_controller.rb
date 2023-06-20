@@ -6,7 +6,12 @@ class ApplicationController < ActionController::Base
 
   # Cartクラスは、rails_ec/app/models/cart.rbに定義されている
   def current_cart
-    # nilの場合、Cart.new(session)を返す
+    # nilの場合、Cart.new(session)を返す→Railsのメモ化
+    # add_itemメソッドを呼び出す
     @current_cart ||= Cart.new(session)
+    Rails.logger.debug("ApplicationController#current_cart: current_cart.items: #{@current_cart.items.inspect}")
+
+    # current_cart.items.sum { |item| item[:quantity] }の戻り値
+    @current_cart
   end
 end

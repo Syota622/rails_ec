@@ -38,7 +38,7 @@
                 カート
                 <span class="badge bg-dark text-white ms-1 rounded-pill">
                   <%# カートに追加した商品の数: %>
-                  <%= current_cart.items.count %>
+                  <%= current_cart.items.sum { |item| item[:quantity] } %>
                 </span>
               <% end %>
             </button>
@@ -78,7 +78,7 @@
                 <!-- Product actions-->
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                   <div class="text-center">
-                    <%# routes.rbで設定したadd_item_pathに飛ぶ %>
+                    <%# routes.rbで設定したadd_item_pathにproduct.idを渡す(post) %>
                     <%= link_to '商品追加', add_item_path(product.id), data: { "turbo-method": :post }, class: "btn btn-outline-dark mt-auto" %>
                   </div>
                 </div>

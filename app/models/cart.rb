@@ -1,21 +1,40 @@
 class Cart
+  attr_reader :items
+
   def initialize(session)
-    # 他のメソッドからもsessionを使えるようにする
     @session = session
     @session[:cart] ||= {}
-    # Rails.logger.debug("Cart initialized. Session contents: #{@session.inspect}")
+
+    # idを数値に変換して、@itemsに代入する
+    @items = @session[:cart].transform_keys(&:to_i)
   end
-  
+
+  # @items = {26=>5, 27=>1}
   def add_item(product_id)
-    @session[:cart][product_id] = (@session[:cart][product_id] || 0) + 1
-    # Rails.logger.debug("Item added. Session contents: #{@session.inspect}")
+
+    # product_idを数値に変換
+    product_id = product_id.to_i
+
+    # @items[product_id]に、個数を加算する（商品追加ボタンをクリックしたか数）
+    @items[product_id] ||= 0
+    @items[product_id] += 1
+    update_session
   end
 
   # 商品(product_id)ごとに追加した個数(quantity)を取得する
   def items
+    Rails.logger.debug("@session: #{@session.inspect}")
     @session[:cart].map do |product_id, quantity|
       { product: Product.find(product_id.to_i), quantity: quantity }
     end
+  end
+
+  private
+
+  # セッションが破棄されるのを防ぐために、状態を保持するためのメソッドを定義
+  # @session[:cart] = {26=>5, 27=>1}
+  def update_session
+    @session[:cart] = @items
   end
 
 end
