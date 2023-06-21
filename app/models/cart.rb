@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Cart
   attr_reader :items
 
@@ -11,7 +13,6 @@ class Cart
 
   # @items = {26=>5, 27=>1}
   def add_item(product_id)
-
     # product_idを数値に変換
     product_id = product_id.to_i
 
@@ -31,15 +32,15 @@ class Cart
 
   # カートから商品を削除する
   # Cart#remove_item: @items before deletion: {26=>9, 27=>9, 28=>3, 31=>4}
-  # Cart#remove_item: @items after deletion: {27=>9, 28=>3, 31=>4}  
+  # Cart#remove_item: @items after deletion: {27=>9, 28=>3, 31=>4}
   def remove_item(id)
-    Rails.logger.debug("Cart#remove_item: @items before deletion: #{@items}")  
+    Rails.logger.debug("Cart#remove_item: @items before deletion: #{@items}")
     @items.delete(id.to_i)
     update_session
     # @session[:cart] = @items  # エラーの原因を調査
     Rails.logger.debug("Cart#remove_item: @items after deletion: #{@items}")
   end
-  
+
   private
 
   # セッションが破棄されるのを防ぐために、状態を保持するためのメソッドを定義
@@ -47,5 +48,4 @@ class Cart
   def update_session
     @session[:cart] = @items
   end
-
 end

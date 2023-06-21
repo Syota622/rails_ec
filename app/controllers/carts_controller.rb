@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 class CartsController < ApplicationController
-  def show
-  end
+  def show; end
 
   # カートに商品を追加する
   def add_item

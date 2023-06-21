@@ -3,7 +3,6 @@
 require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
-
   # Enable lograge
   config.log_level = :debug
 
