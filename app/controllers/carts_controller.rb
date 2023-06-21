@@ -11,4 +11,11 @@ class CartsController < ApplicationController
     quantity.times { current_cart.add_item(@product.id) }
     redirect_to products_path, notice: 'カートに商品を追加しました'
   end
+
+  # カートから商品を削除する
+  def remove_item
+    product = Product.find(params[:id])
+    current_cart.remove_item(product.id)
+    redirect_to cart_path, notice: 'カートから商品を削除しました'
+  end
 end

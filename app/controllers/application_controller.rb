@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     # nilの場合、Cart.new(session)を返す→Railsのメモ化
     # add_itemメソッドを呼び出す
     @current_cart ||= Cart.new(session)
-    Rails.logger.debug("ApplicationController#current_cart: current_cart.items: #{@current_cart.items.inspect}")
+    # Rails.logger.debug("ApplicationController#current_cart: current_cart.items: #{@current_cart.items.inspect}")
 
     # 戻り値
     @current_cart

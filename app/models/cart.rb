@@ -23,12 +23,23 @@ class Cart
 
   # 商品(product_id)ごとに追加した個数(quantity)を取得する
   def items
-    Rails.logger.debug("@session: #{@session.inspect}")
+    # Rails.logger.debug("@session: #{@session.inspect}")
     @session[:cart].map do |product_id, quantity|
       { product: Product.find(product_id.to_i), quantity: quantity }
     end
   end
 
+  # カートから商品を削除する
+  # Cart#remove_item: @items before deletion: {26=>9, 27=>9, 28=>3, 31=>4}
+  # Cart#remove_item: @items after deletion: {27=>9, 28=>3, 31=>4}  
+  def remove_item(id)
+    Rails.logger.debug("Cart#remove_item: @items before deletion: #{@items}")  
+    @items.delete(id.to_i)
+    update_session
+    # @session[:cart] = @items  # エラーの原因を調査
+    Rails.logger.debug("Cart#remove_item: @items after deletion: #{@items}")
+  end
+  
   private
 
   # セッションが破棄されるのを防ぐために、状態を保持するためのメソッドを定義
