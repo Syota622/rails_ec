@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
     @current_cart ||= Cart.new(session)
     Rails.logger.debug("ApplicationController#current_cart: current_cart.items: #{@current_cart.items.inspect}")
 
-    # current_cart.items.sum { |item| item[:quantity] }の戻り値
+    # 戻り値
     @current_cart
   end
 end

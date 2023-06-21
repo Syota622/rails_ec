@@ -156,50 +156,42 @@
       <%# <img class="d-block mx-auto mb-4" src="/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> %>
       <img class="d-block mx-auto mb-4" src="/assets/bootstrap-logo.svg" alt="bootstrap-logo" width="72" height="57">
       <h2>Checkout form</h2>
-      <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+      <p class="lead">以下は、Bootstrapのフォームコントロールだけで構築したフォームの例です。各必須フォームグループにはバリデーション状態があり、フォームを完成させずに送信しようとすると、バリデーション状態がトリガーされます。</p>
     </div>
 
     <div class="row g-5">
       <div class="col-md-5 col-lg-4 order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-primary">Your cart</span>
-          <span class="badge bg-primary rounded-pill">3</span>
+          <span class="text-primary">カート</span>
+          <span class="badge bg-primary rounded-pill">
+            <%= current_cart.items.sum { |item| item[:quantity] } %>個
+          </span>
         </h4>
         <ul class="list-group mb-3">
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Product name</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$12</span>
+          <% current_cart.items.each do |item| %>
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0"><%= item[:product].name %></h6>
+                <small class="text-body-secondary"><%= item[:product].description %></small>
+              </div>
+              <span class="text-body-secondary"><%= number_to_currency(item[:product].price, unit: "¥", precision: 0) %></span>
+              <span class="text-body-secondary"><%= item[:quantity] %>個</span>
+            </li>
+          <% end %>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>総額 (円)</span>
+            <strong>
+              <%= number_to_currency(current_cart.items.sum { |item| item[:product].price * item[:quantity] }, unit: "¥", precision: 0) %>
+            </strong>
           </li>
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Second product</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$8</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Third item</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$5</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+          <%# <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
             <div class="text-success">
               <h6 class="my-0">Promo code</h6>
               <small>EXAMPLECODE</small>
             </div>
             <span class="text-success">−$5</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between">
-            <span>Total (USD)</span>
-            <strong>$20</strong>
-          </li>
+          </li> %>
         </ul>
-
         <form class="card p-2">
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Promo code">
