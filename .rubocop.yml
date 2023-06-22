@@ -10,3 +10,5 @@ Metrics/MethodLength:
 Metrics/AbcSize:
   Exclude:
     - 'db/migrate/*'
+Metrics/BlockLength:
+  Max: 50 # or any number you prefer

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Cart
-  attr_reader :items
-
   def initialize(session)
     @session = session
     @session[:cart] ||= {}
