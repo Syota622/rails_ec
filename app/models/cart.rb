@@ -22,7 +22,6 @@ class Cart
 
   # 商品(product_id)ごとに追加した個数(quantity)を取得する
   def items
-    # Rails.logger.debug("@session: #{@session.inspect}")
     @session[:cart].map do |product_id, quantity|
       { product: Product.find(product_id.to_i), quantity: quantity }
     end

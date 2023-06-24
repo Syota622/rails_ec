@@ -7,8 +7,9 @@ Rails.application.routes.draw do
 
   resource :cart
 
-  post 'add_item/:id', to: 'carts#add_item', as: 'add_item'
-  delete 'remove_item/:id', to: 'carts#remove_item', as: 'remove_item'
+  # add_item/:idのURLにアクセスがあった場合、cartsコントローラー(CartsController)のcreateアクションを呼び出す
+  post 'add_item/:id', to: 'carts#create', as: 'create'
+  delete 'remove_item/:id', to: 'carts#destroy', as: 'delete'
 
   namespace :admin do
     resources :products
