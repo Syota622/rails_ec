@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CartsController < ApplicationController
   # カートの内容を表示する
   def index
@@ -26,6 +28,7 @@ class CartsController < ApplicationController
 
   private
 
+  # Cartクラス
   def current_cart
     @current_cart ||= Cart.new(session)
   end
