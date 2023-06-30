@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Cart
+class Cart < ApplicationRecord
   def initialize(session)
     @session = session
     @session[:cart] ||= {}
@@ -31,11 +31,8 @@ class Cart
   # Cart#remove_item: @items before deletion: {26=>9, 27=>9, 28=>3, 31=>4}
   # Cart#remove_item: @items after deletion: {27=>9, 28=>3, 31=>4}
   def remove_item(id)
-    Rails.logger.debug("Cart#remove_item: @items before deletion: #{@items}")
     @items.delete(id.to_i)
     update_session
-    # @session[:cart] = @items  # エラーの原因を調査
-    Rails.logger.debug("Cart#remove_item: @items after deletion: #{@items}")
   end
 
   private
