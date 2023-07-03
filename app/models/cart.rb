@@ -2,6 +2,9 @@
 
 class Cart < ApplicationRecord
   def initialize(session)
+
+    # @session: #<ActionDispatch::Request::Session:0x00007f1701770d70>
+    # @session[:cart]: {"26"=>2, "28"=>1}
     @session = session
     @session[:cart] ||= {}
 
@@ -33,6 +36,11 @@ class Cart < ApplicationRecord
   def remove_item(id)
     @items.delete(id.to_i)
     update_session
+  end
+
+  # 商品のカート数
+  def total_quantity
+    items.sum { |item| item[:quantity] }
   end
 
   private
