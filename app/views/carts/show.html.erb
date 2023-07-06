@@ -155,11 +155,11 @@
             <% @cart_items.each do |item| %>
               <li class="list-group-item d-flex justify-content-between lh-sm">
                 <div>
-                  <h6 class="my-0"><%= item[:product].name %></h6>
+                  <h6 class="my-0"><%= item.product.name %></h6>
                 </div>
-                <span class="text-body-secondary"><%= number_to_currency(item[:product].price, unit: "¥", strip_insignificant_zeros: true) %></span>
-                <span class="text-body-secondary"><%= item[:quantity] %>個</span>
-                <%= link_to '削除', { controller: "carts", action: "destroy", id: item[:product].id }, data: { turbo_method: :delete } %>
+                <span class="text-body-secondary"><%= number_to_currency(item.product.price, unit: "¥", strip_insignificant_zeros: true) %></span>
+                <span class="text-body-secondary"><%= item.quantity %>個</span>
+                <%= link_to '削除', { controller: "carts", action: "destroy", id: item.product.id }, data: { turbo_method: :delete } %>
               </li>
             <% end %>
             <li class="list-group-item d-flex justify-content-between">
