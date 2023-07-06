@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CartsController < ApplicationController
   before_action :set_cart
 
@@ -25,7 +27,7 @@ class CartsController < ApplicationController
   def destroy
     product_id = params[:id].to_i
     item = @cart.cart_items.find_by(product_id: product_id)
-  
+
     if item
       item.destroy
       redirect_to cart_path(@cart), notice: 'カートから商品を削除しました'
