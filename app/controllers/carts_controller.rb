@@ -14,7 +14,6 @@ class CartsController < ApplicationController
     product_id = params[:id].to_i
     quantity = params[:quantity].to_i
     item = @cart.cart_items.find_by(product_id: product_id)
-    Rails.logger.debug("item.inspect: #{item.inspect}")
     if item
       item.quantity += quantity
       item.save
@@ -40,9 +39,6 @@ class CartsController < ApplicationController
 
   def set_cart
     @cart = session[:cart_id] ? Cart.find(session[:cart_id]) : Cart.create
-    Rails.logger.debug("@cart.inspect: #{@cart.inspect}")
-    Rails.logger.debug("@cart.id: #{@cart.id}")
     session[:cart_id] ||= @cart.id
-    Rails.logger.debug("session[:cart_id]: #{session[:cart_id]}")
   end
 end
