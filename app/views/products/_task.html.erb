@@ -33,9 +33,14 @@
           </ul>
           <form class="d-flex">
             <button class="btn btn-outline-dark" type="submit">
-              <i class="bi-cart-fill me-1"></i>
-              Cart
-              <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+              <%= link_to cart_path, class: "btn btn-outline-dark" do %>
+                <i class="bi-cart-fill me-1"></i>
+                カート
+                <span class="badge bg-dark text-white ms-1 rounded-pill">
+                  <%# カートに追加した商品の数: %>
+                  <%= @total_quantity %>
+                </span>
+              <% end %>
             </button>
           </form>
         </div>
@@ -72,7 +77,10 @@
                 </div>
                 <!-- Product actions-->
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                  <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">商品追加</a></div>
+                  <div class="text-center">
+                    <%# routes.rbで設定したadd_item_pathにproduct.idを渡す(post) cartsコントローラーのcreateアクションを呼ぶ%>
+                    <%= link_to '商品追加', { controller: "carts", action: "create", id: product.id, quantity: 1 }, data: { turbo_method: :post }, class: "btn btn-outline-dark mt-auto" %>
+                  </div>
                 </div>
               </div>
             </div>
