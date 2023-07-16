@@ -4,6 +4,11 @@ class CartsController < ApplicationController
   before_action :set_cart
 
   def show
+    # @orderは、form_withで使うために定義している
+    @order = Order.new
+    @order.build_address
+    @order.build_payment
+
     @cart_items = @cart.cart_items
     @total_price = @cart_items.reduce(0) do |sum, item|
       sum + (item.product.price * item.quantity)

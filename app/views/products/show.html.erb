@@ -55,11 +55,11 @@
             <h1 class="display-5 fw-bolder"><%= @product.name %></h1>
             <p class="lead"><%= @product.description %></p>
             <%# create_path(@product.id)ヘルパーメソッドは、routes.rbファイルでas: 'create'と定義されたルーティングヘルパーから生成 %>
-            <%= form_with url: create_path(@product.id), data: { "turbo-method": :post } do |f| %>
+            <%= form_with url: create_path(@product.id), data: { "turbo-method": :post } do |form| %>
               <div class="d-flex">
                 <%# <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" /> %>
-                <%= f.number_field :quantity, value: 1, min: 1, class: "form-control text-center me-3", style: "max-width: 3rem" %>
-                <%= f.submit '商品追加', class: "btn btn-outline-dark flex-shrink-0" %>
+                <%= form.number_field :quantity, value: 1, min: 1, class: "form-control text-center me-3", style: "max-width: 3rem" %>
+                <%= form.submit '商品追加', class: "btn btn-outline-dark flex-shrink-0" %>
               </div>
             <% end %>
           </div>
