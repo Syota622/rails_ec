@@ -14,6 +14,7 @@ class OrdersController < ApplicationController
           order: @order,
           product: item.product,
           quantity: item.quantity,
+          name: item.product.name,
           price: item.product.price
         )
       end

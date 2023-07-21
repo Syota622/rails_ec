@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resource :cart
 
   resources :orders, only: [:new, :create]
+  resources :order_items, only: [:index, :show]  # 追加
 
   # add_item/:idのURLにアクセスがあった場合、cartsコントローラー(CartsController)のcreateアクションを呼び出す
   # asを省略した場合、add_item_path、remove_item_pathという名前のヘルパーメソッドが生成される
