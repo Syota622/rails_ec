@@ -19,3 +19,9 @@ docker-compose run --rm web rails generate mailer OrderMailer
 
 # ロールバック
 docker-compose run --rm web rails db:rollback
+
+# heroku
+git push heroku feature/checkout\&purchase:main
+
+・Heroku上でデータベースマイグレーションを実行する
+heroku run rake db:migrate
