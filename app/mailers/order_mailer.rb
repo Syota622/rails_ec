@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class OrderMailer < ApplicationMailer
   def order_confirmation(order)
     @order = order
-    mail(to: @order.email, subject: 'Order Confirmation')
+    mail(to: @order.address.email_name, subject: 'Order Confirmation')
   end
 end
