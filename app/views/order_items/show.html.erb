@@ -13,24 +13,26 @@
         <div class="card-header">
           <h1>購入明細詳細</h1>
         </div>
-        <div class="card-body">
-          <h5 class="card-title"><strong>オーダーID:</strong></h5>
-          <p class="card-text"><%= @order_item.order_id %></p>
-          <hr>
-          <h5 class="card-title"><strong>商品ID:</strong></h5>
-          <p class="card-text"><%= @order_item.product_id %></p>
-          <hr>
-          <h5 class="card-title"><strong>商品名:</strong></h5>
-          <p class="card-text"><%= @order_item.name %></p>
-          <hr>
-          <h5 class="card-title"><strong>数量:</strong></h5>
-          <p class="card-text"><%= @order_item.quantity %></p>
-          <hr>
-          <h5 class="card-title"><strong>価格:</strong></h5>
-          <p class="card-text"><%= @order_item.price %></p>
-          <hr>
-          <%= link_to '一覧に戻る', order_items_path, class: 'btn btn-primary' %>
-        </div>
+        <% @order_items.each do |order_item| %>
+          <div class="card-body">
+            <h5 class="card-title"><strong>オーダーID:</strong></h5>
+            <p class="card-text"><%= order_item.order_id %></p>
+            <hr>
+            <h5 class="card-title"><strong>商品ID:</strong></h5>
+            <p class="card-text"><%= order_item.product_id %></p>
+            <hr>
+            <h5 class="card-title"><strong>商品名:</strong></h5>
+            <p class="card-text"><%= order_item.name %></p>
+            <hr>
+            <h5 class="card-title"><strong>数量:</strong></h5>
+            <p class="card-text"><%= order_item.quantity %></p>
+            <hr>
+            <h5 class="card-title"><strong>価格:</strong></h5>
+            <p class="card-text"><%= order_item.price %></p>
+            <hr>
+            <%= link_to '一覧に戻る', order_items_path, class: 'btn btn-primary' %>
+          </div>
+        <% end %>
       </div>
     </div>
   </body>

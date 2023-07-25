@@ -4,11 +4,11 @@ class OrderItemsController < ApplicationController
   before_action :basic_auth
 
   def index
-    @order_items = OrderItem.all
+    @orders = Order.all
   end
 
   def show
-    @order_item = OrderItem.find(params[:id])
+    @order_items = OrderItem.where(order_id: params[:id])
   end
 
   private

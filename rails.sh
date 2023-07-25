@@ -25,3 +25,7 @@ git push heroku feature/checkout\&purchase:main
 
 ・Heroku上でデータベースマイグレーションを実行する
 heroku run rake db:migrate
+
+# rubocop
+docker-compose run --rm web bundle exec rubocop -A
+docker-compose run --rm web bin/htmlbeautifier

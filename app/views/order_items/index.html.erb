@@ -19,11 +19,11 @@
           </tr>
         </thead>
         <tbody>
-          <% @order_items.each do |order_item| %>
+          <% @orders.each do |order| %>
             <tr>
-              <td><%= order_item.id %></td>
-              <td><%= order_item.name %></td>
-              <td><%= link_to '詳細を見る', order_item_path(order_item.id), class: 'btn btn-primary' %></td>
+              <td><%= order.id %></td>
+              <td><%= order.cart_id %></td>
+              <td><%= link_to '詳細を見る', order_item_path(order.id), class: 'btn btn-primary' %></td>
             </tr>
           <% end %>
         </tbody>
