@@ -4,13 +4,20 @@ class OrdersController < ApplicationController
   before_action :set_cart, only: %i[create]
 
   def create
+    # Orderテーブルに購入者の情報を保存
     @order = Order.new(order_params)
     @order.cart = @cart
 
     if @order.save
+      # OrderItemテーブルに購入した商品の情報を保存
       create_order_items
+
+      # OrderMailerを使って購入者にメールを送信
       send_order_confirmation
+
+      # カートを空にする
       clear_cart
+
       redirect_to products_path, notice: '購入ありがとうございます'
     else
       render :new

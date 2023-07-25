@@ -1,3 +1,4 @@
+# 💻 チェックアウト機能実装
 # railsコマンドなど実行したコマンドをメモとして記録しておく
 # モデル追加
 docker-compose run --rm web rails generate model Order cart:references
@@ -29,3 +30,5 @@ heroku run rake db:migrate
 # rubocop
 docker-compose run --rm web bundle exec rubocop -A
 docker-compose run --rm web bin/htmlbeautifier
+
+# 💻 プロモーションコード機能実装
