@@ -8,6 +8,7 @@ class OrdersController < ApplicationController
     @order = Order.new(order_params)
     @order.cart = @cart
 
+    # @orderがデータベースに保存され、その際にcart_idフィールドに@cartのidが保存されます。
     if @order.save
       # OrderItemテーブルに購入した商品の情報を保存
       create_order_items

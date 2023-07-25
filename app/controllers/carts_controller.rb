@@ -6,14 +6,11 @@ class CartsController < ApplicationController
   def show
     # @orderは、form_withで使うために定義している
     @order = Order.new
-
     # @orderに紐づくaddressとpaymentを作成
     @order.build_address
     @order.build_payment
-
     # カートに入っている商品の一覧を取得
     @cart_items = @cart.cart_items
-
     # カートに入っている商品の合計金額を計算
     @total_price = @cart_items.reduce(0) do |sum, item|
       sum + (item.product.price * item.quantity)
@@ -36,7 +33,6 @@ class CartsController < ApplicationController
 
   # カートから商品を削除する
   def destroy
-
     # カートから削除する商品のidを取得
     product_id = params[:id].to_i
     item = @cart.cart_items.find_by(product_id: product_id)
