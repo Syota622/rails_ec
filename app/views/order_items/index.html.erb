@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>order_items_index</title>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center my-4">購入明細一覧</h1>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>購入明細ID</th>
+            <th>商品名</th>
+            <th>詳細</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @orders.each do |order| %>
+            <tr>
+              <td><%= order.id %></td>
+              <td><%= order.cart_id %></td>
+              <td><%= link_to '詳細を見る', order_item_path(order.id), class: 'btn btn-primary' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

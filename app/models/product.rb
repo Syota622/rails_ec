@@ -8,8 +8,8 @@ class Product < ApplicationRecord
   validates :price, presence: { message: '価格を入力してください' }
   validates :image, presence: { message: '画像を選択してください' }
 
-  # cart.cart_itemsとすると、そのcartに属するすべてのcart_itemsを取得Q
-  # dependent: :destroyオプションは、CartまたはProductが削除されたときに、それに紐づくCartItemも自動的に削除される
+  # Product.cart_itemsとすると、そのcartに属するすべてのcart_itemsを取得Q
+  # dependent: :destroyオプションは、Productが削除されたときに、それに紐づくCartItemも自動的に削除される
   has_many :cart_items, dependent: :destroy
   has_many :carts, through: :cart_items
 end
