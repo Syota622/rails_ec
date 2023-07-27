@@ -32,3 +32,5 @@ docker-compose run --rm web bundle exec rubocop -A
 docker-compose run --rm web bin/htmlbeautifier
 
 # 💻 プロモーションコード機能実装
+docker-compose run --rm web rails g model PromotionCode code:string discount_amount:integer used:boolean
+docker-compose run --rm web rails db:migrate
