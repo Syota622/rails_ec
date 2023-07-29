@@ -15,8 +15,6 @@ class Order < ApplicationRecord
   # order.order_itemsとすると、そのorderに紐づくorder_itemsを取得できる
   accepts_nested_attributes_for :address, :payment
 
-  # belongs_to :promotion_code, optional: true
-
   private
   
   def apply_promotion_code

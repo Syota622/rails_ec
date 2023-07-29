@@ -5,6 +5,4 @@ class PromotionCode < ApplicationRecord
   validates :discount_amount, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 100, less_than_or_equal_to: 1000 }
   # 使用済みかどうか
   validates :used, inclusion: { in: [true, false] }
-
-  # has_many :orders
 end
