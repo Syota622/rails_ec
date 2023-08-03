@@ -4,6 +4,7 @@ class OrdersController < ApplicationController
   before_action :set_cart, only: %i[create]
 
   def create
+    Rails.logger.info("params: #{params.inspect}")
     # Orderテーブルに購入者の情報を保存
     @order = Order.new(order_params)
     @order.cart = @cart
@@ -64,11 +65,11 @@ class OrdersController < ApplicationController
 
   # プロモーションコードが使用済みに更新する
   def update_promotion_code
-    promo_code = params[:cart][:promo_code]
+    promo_code = session[:promo_code]
     promotion = PromotionCode.find_by(code: promo_code, used: false)
-    if promotion
-      promotion.update(used: true)
-    end
+    return unless promotion
+
+    promotion.update(used: true)
   end
 
   # カートを空にする

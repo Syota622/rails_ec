@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CartsController < ApplicationController
   before_action :set_cart
 
@@ -16,19 +18,9 @@ class CartsController < ApplicationController
   # プロモーションコードを適用する
   def update
     @cart_items = @cart.cart_items
-    
     apply_promo_code
-
-    # プロモーションコードの適用結果を表示する
-    if @promo_applied
-      @total_price = calculate_total_price
-      @discount_amount = PromotionCode.find_by(code: @promo_code).discount_amount
-      @total_price = @total_price - @discount_amount
-      flash.now[:notice] = 'プロモーションコードを適用しました'
-    else
-      flash.now[:alert] = 'プロモーションコードが無効です'
-      @discount_amount = nil
-    end
+    @promo_code = session[:promo_code]
+    apply_promotion_if_available
     render :show
   end
 
@@ -78,12 +70,24 @@ class CartsController < ApplicationController
 
   # プロモーションコードを適用する
   def apply_promo_code
-    @promo_code = params[:cart][:promo_code]
-    promotion = PromotionCode.find_by(code: @promo_code, used: false)
+    promo_code = params[:cart][:promo_code]
+    return unless PromotionCode.exists?(code: promo_code)
+
+    # セッションにプロモーションコードを保存
+    session[:promo_code] = promo_code
+  end
+
+  def apply_promotion_if_available
+    return unless @promo_code
+
+    promotion = PromotionCode.find_by(code: @promo_code)
     if promotion
-      @promo_applied = true
+      @discount_amount = promotion.discount_amount
+      @total_price = calculate_total_price - @discount_amount
+      flash.now[:notice] = 'プロモーションコードを適用しました'
     else
-      @promo_applied = false
+      @discount_amount = nil
+      flash.now[:alert] = 'プロモーションコードが無効です'
     end
   end
 end

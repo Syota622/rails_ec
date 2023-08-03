@@ -2,7 +2,7 @@
 
 class Order < ApplicationRecord
   attr_accessor :promo_code
-  
+
   belongs_to :cart
 
   has_many :order_items, dependent: :destroy

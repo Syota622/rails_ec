@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :promotion_code do
   desc 'プロモーションコードを生成'
   task generate: :environment do
