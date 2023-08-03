@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CartsController < ApplicationController
   before_action :set_cart
 
@@ -12,9 +10,26 @@ class CartsController < ApplicationController
     # カートに入っている商品の一覧を取得
     @cart_items = @cart.cart_items
     # カートに入っている商品の合計金額を計算
-    @total_price = @cart_items.reduce(0) do |sum, item|
-      sum + (item.product.price * item.quantity)
+    @total_price = calculate_total_price
+  end
+
+  # プロモーションコードを適用する
+  def update
+    @cart_items = @cart.cart_items
+    
+    apply_promo_code
+
+    # プロモーションコードの適用結果を表示する
+    if @promo_applied
+      @total_price = calculate_total_price
+      @discount_amount = PromotionCode.find_by(code: @promo_code).discount_amount
+      @total_price = @total_price - @discount_amount
+      flash.now[:notice] = 'プロモーションコードを適用しました'
+    else
+      flash.now[:alert] = 'プロモーションコードが無効です'
+      @discount_amount = nil
     end
+    render :show
   end
 
   # カートに商品を追加する
@@ -48,8 +63,27 @@ class CartsController < ApplicationController
 
   private
 
+  # カートを取得する
   def set_cart
     @cart = session[:cart_id] ? Cart.find(session[:cart_id]) : Cart.create
     session[:cart_id] ||= @cart.id
+  end
+
+  # カートに入っている商品の合計金額を計算する
+  def calculate_total_price
+    @cart_items.reduce(0) do |sum, item|
+      sum + item.product.price * item.quantity
+    end
+  end
+
+  # プロモーションコードを適用する
+  def apply_promo_code
+    @promo_code = params[:cart][:promo_code]
+    promotion = PromotionCode.find_by(code: @promo_code, used: false)
+    if promotion
+      @promo_applied = true
+    else
+      @promo_applied = false
+    end
   end
 end

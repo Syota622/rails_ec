@@ -19,6 +19,10 @@ class OrdersController < ApplicationController
       # カートを空にする
       clear_cart
 
+      # プロモーションコードが使用済みに更新
+      update_promotion_code
+
+      # 購入完了画面にリダイレクト
       redirect_to products_path, notice: '購入ありがとうございます'
     else
       render :new
@@ -27,10 +31,12 @@ class OrdersController < ApplicationController
 
   private
 
+  # カートを取得する
   def set_cart
     @cart = Cart.find(session[:cart_id])
   end
 
+  # 購入者の情報を取得する
   def order_params
     params.require(:order).permit(
       address_attributes: %i[first_name last_name user_name email_name address1 address2 prefectures post_code],
@@ -38,6 +44,7 @@ class OrdersController < ApplicationController
     )
   end
 
+  # 購入した商品の情報を保存する
   def create_order_items
     @cart.cart_items.each do |item|
       OrderItem.create(
@@ -50,10 +57,21 @@ class OrdersController < ApplicationController
     end
   end
 
+  # 購入者にメールを送信する
   def send_order_confirmation
     OrderMailer.order_confirmation(@order).deliver_later
   end
 
+  # プロモーションコードが使用済みに更新する
+  def update_promotion_code
+    promo_code = params[:cart][:promo_code]
+    promotion = PromotionCode.find_by(code: promo_code, used: false)
+    if promotion
+      promotion.update(used: true)
+    end
+  end
+
+  # カートを空にする
   def clear_cart
     session[:cart_id] = nil
   end

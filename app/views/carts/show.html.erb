@@ -154,31 +154,39 @@
                 <div>
                   <h6 class="my-0"><%= item.product.name %></h6>
                 </div>
+                <%# number_to_currencyとは、数値を通貨の形式に変換するヘルパーメソッドです。 %>
                 <span class="text-body-secondary"><%= number_to_currency(item.product.price, unit: "¥", strip_insignificant_zeros: true) %></span>
                 <span class="text-body-secondary"><%= item.quantity %>個</span>
                 <%= link_to '削除', { controller: "carts", action: "destroy", id: item.product.id }, data: { turbo_method: :delete } %>
               </li>
             <% end %>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>総額 (円)</span>
-              <strong>
-                <%= number_to_currency(@total_price, unit: "¥", strip_insignificant_zeros: true) %>
-              </strong>
-            </li>
-            <%# <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
-            <div class="text-success">
-              <h6 class="my-0">Promo code</h6>
-              <small>EXAMPLECODE</small>
-            </div>
-            <span class="text-success">−$5</span>
-          </li> %>
-          </ul>
-          <form class="card p-2">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Promo code">
-              <button type="submit" class="btn btn-secondary">Redeem</button>
-            </div>
-          </form>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between">
+                <span>総額 (円)</span>
+                <strong>
+                  <%= number_to_currency(@total_price, unit: "¥", strip_insignificant_zeros: true) %>
+                </strong>
+              </li>
+              <% if @discount_amount %>
+                <li class="list-group-item d-flex justify-content-between bg-light">
+                  <div class="text-success">
+                    <h6 class="my-0">プロモーションコード適用: <%= @promo_code %></h6>
+                  </div>
+                  <span class="text-success">−¥<%= @discount_amount %></span>
+                </li>
+              <% end %>
+            </ul>
+            <%= form_with model: @cart, class: "card p-2", data: { turbo: "false" }, method: :patch do |form| %>
+              <div class="input-group">
+                <%= form.text_field :promo_code, class: "form-control", placeholder: "Promo code" %>
+                <%= form.submit '入力', class: "btn btn-secondary" %>
+              </div>
+            <% end %>
+            <% flash.each do |message_type, message| %>
+              <div class="alert alert-<%= message_type %>">
+                <%= message %>
+              </div>
+            <% end %>
         </div>
         <div class="col-md-7 col-lg-8">
           <h4 class="mb-3">請求書先住所</h4>
