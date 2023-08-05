@@ -13,15 +13,19 @@ class CartsController < ApplicationController
     @cart_items = @cart.cart_items
     # カートに入っている商品の合計金額を計算
     @total_price = calculate_total_price
+    # セッションからプロモーションコードを取得
+    @promo_code = session[:promo_code]
+    # 必要に応じてプロモーションを適用
+    apply_promotion_if_available
   end
 
   # プロモーションコードを適用する
   def update
     @cart_items = @cart.cart_items
+    # プロモーションコードを適用
     apply_promo_code
     @promo_code = session[:promo_code]
-    apply_promotion_if_available
-    render :show
+    redirect_to action: :show
   end
 
   # カートに商品を追加する
@@ -71,23 +75,25 @@ class CartsController < ApplicationController
   # プロモーションコードを適用する
   def apply_promo_code
     promo_code = params[:cart][:promo_code]
-    return unless PromotionCode.exists?(code: promo_code)
-
-    # セッションにプロモーションコードを保存
-    session[:promo_code] = promo_code
+    if PromotionCode.exists?(code: promo_code)
+      # セッションにプロモーションコードを保存
+      session[:promo_code] = promo_code
+    else
+      # セッションからプロモーションコードを削除
+      session.delete(:promo_code)
+      flash[:alert] = 'プロモーションコードが無効です'
+    end
   end
 
+  # プロモーションコードを適用する
   def apply_promotion_if_available
     return unless @promo_code
 
     promotion = PromotionCode.find_by(code: @promo_code)
-    if promotion
-      @discount_amount = promotion.discount_amount
-      @total_price = calculate_total_price - @discount_amount
-      flash.now[:notice] = 'プロモーションコードを適用しました'
-    else
-      @discount_amount = nil
-      flash.now[:alert] = 'プロモーションコードが無効です'
-    end
+    return unless promotion
+
+    @discount_amount = promotion.discount_amount
+    @total_price = calculate_total_price - @discount_amount
+    flash.now[:notice] = 'プロモーションコードを適用しました'
   end
 end
