@@ -23,9 +23,12 @@ docker-compose run --rm web rails db:rollback
 
 ## heroku
 git push heroku feature/checkout\&purchase:main
+git push heroku feature/promo-code:main
 
-・Heroku上でデータベースマイグレーションを実行する
+# Heroku
 heroku run rake db:migrate
+heroku rake promotion_code:generate
+heroku pg:psql -a lit-savannah-08687
 
 ## rubocop
 docker-compose run --rm web bundle exec rubocop -A
