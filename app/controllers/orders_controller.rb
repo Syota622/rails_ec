@@ -6,6 +6,7 @@ class OrdersController < ApplicationController
   def create
     # Orderテーブルに購入者の情報を保存
     @order = Order.new(order_params)
+    # @order.cartへ@cartを代入することで、@orderに紐づくcart_idフィールドに@cartのidが保存されます。
     @order.cart = @cart
 
     # @orderがデータベースに保存され、その際にcart_idフィールドに@cartのidが保存されます。
@@ -59,6 +60,14 @@ class OrdersController < ApplicationController
 
   # 購入者にメールを送信する
   def send_order_confirmation
+    # セッションからプロモーションコードを取得
+    promo_code = session[:promo_code]
+    # プロモーションコードが存在する場合は、そのプロモーションコードに紐づく割引額を@orderに代入
+    promotion = PromotionCode.find_by(code: promo_code)
+    if promotion
+      @order.promo_code = promo_code
+      @order.discount_amount = promotion.discount_amount
+    end
     OrderMailer.order_confirmation(@order).deliver_later
   end
 
