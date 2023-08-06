@@ -75,7 +75,7 @@ class CartsController < ApplicationController
   # プロモーションコードを適用する
   def apply_promo_code
     promo_code = params[:cart][:promo_code]
-    if PromotionCode.exists?(code: promo_code)
+    if PromotionCode.exists?(code: promo_code, used: false)
       # セッションにプロモーションコードを保存
       session[:promo_code] = promo_code
     else

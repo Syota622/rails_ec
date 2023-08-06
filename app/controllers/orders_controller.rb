@@ -64,11 +64,13 @@ class OrdersController < ApplicationController
     promo_code = session[:promo_code]
     # プロモーションコードが存在する場合は、そのプロモーションコードに紐づく割引額を@orderに代入
     promotion = PromotionCode.find_by(code: promo_code)
-    if promotion
-      @order.promo_code = promo_code
-      @order.discount_amount = promotion.discount_amount
-    end
-    OrderMailer.order_confirmation(@order).deliver_later
+    # メールの出力にプロモーションコードの割引額を渡す
+    discount_amount = if promotion
+                        promotion.discount_amount
+                      else
+                        0
+                      end
+    OrderMailer.order_confirmation(@order, discount_amount).deliver_later
   end
 
   # プロモーションコードが使用済みに更新する
