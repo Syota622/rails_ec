@@ -154,109 +154,117 @@
                 <div>
                   <h6 class="my-0"><%= item.product.name %></h6>
                 </div>
+                <%# number_to_currencyとは、数値を通貨の形式に変換するヘルパーメソッドです。 %>
                 <span class="text-body-secondary"><%= number_to_currency(item.product.price, unit: "¥", strip_insignificant_zeros: true) %></span>
                 <span class="text-body-secondary"><%= item.quantity %>個</span>
                 <%= link_to '削除', { controller: "carts", action: "destroy", id: item.product.id }, data: { turbo_method: :delete } %>
               </li>
             <% end %>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>総額 (円)</span>
-              <strong>
-                <%= number_to_currency(@total_price, unit: "¥", strip_insignificant_zeros: true) %>
-              </strong>
-            </li>
-            <%# <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
-            <div class="text-success">
-              <h6 class="my-0">Promo code</h6>
-              <small>EXAMPLECODE</small>
-            </div>
-            <span class="text-success">−$5</span>
-          </li> %>
-          </ul>
-          <form class="card p-2">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Promo code">
-              <button type="submit" class="btn btn-secondary">Redeem</button>
-            </div>
-          </form>
-        </div>
-        <div class="col-md-7 col-lg-8">
-          <h4 class="mb-3">請求書先住所</h4>
-          <%= form_with model: @order, url: orders_path, data: { "turbo-method": :post } do |form| %>
-            <div class="row g-3">
-              <%= form.fields_for :address do |address_form| %>
-                <div class="col-sm-6">
-                  <%= address_form.label :first_name, "苗字(姓)", class: "form-label" %>
-                  <%= address_form.text_field :first_name, class: "form-control", required: true %>
-                </div>
-                <div class="col-sm-6">
-                  <%= address_form.label :last_name, "名前(名)", class: "form-label" %>
-                  <%= address_form.text_field :last_name, class: "form-control", required: true %>
-                </div>
-                <div class="col-12">
-                  <%= address_form.label :user_name, "ユーザー名", class: "form-label" %>
-                  <%= address_form.text_field :user_name, class: "form-control", required: true %>
-                </div>
-                <div class="col-12">
-                  <%= address_form.label :email_name, "Email", class: "form-label" %>
-                  <%= address_form.text_field :email_name, class: "form-control", required: true  %>
-                </div>
-                <div class="col-12">
-                  <%= address_form.label :address1, "住所", class: "form-label" %>
-                  <%= address_form.text_field :address1, class: "form-control", required: true %>
-                </div>
-                <div class="col-12">
-                  <%= address_form.label :address2, "住所 2", class: "form-label" %>
-                  <%= address_form.text_field :address2, class: "form-control" %>
-                </div>
-                <div class="col-md-4">
-                  <%= address_form.label :prefectures, "都道府県", class: "form-label" %>
-                  <%= address_form.text_field :prefectures, class: "form-control", required: true %>
-                </div>
-                <div class="col-md-3">
-                  <%= address_form.label :post_code, "郵便番号", class: "form-label" %>
-                  <%= address_form.text_field :post_code, class: "form-control", required: true %>
-                </div>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between">
+                <span>総額 (円)</span>
+                <strong>
+                  <%= number_to_currency(@total_price, unit: "¥", strip_insignificant_zeros: true) %>
+                </strong>
+              </li>
+              <% if @discount_amount %>
+                <li class="list-group-item d-flex justify-content-between bg-light">
+                  <div class="text-success">
+                    <h6 class="my-0">プロモーションコード適用: <%= @promo_code %></h6>
+                  </div>
+                  <span class="text-success">−¥<%= @discount_amount %></span>
+                </li>
               <% end %>
+            </ul>
+            <%= form_with model: @cart, class: "card p-2", data: { turbo: "false" }, method: :patch do |form| %>
+              <div class="input-group">
+                <%= form.text_field :promo_code, class: "form-control", placeholder: "Promo code" %>
+                <%= form.submit '入力', class: "btn btn-secondary" %>
+              </div>
+            <% end %>
+            <% flash.each do |message_type, message| %>
+              <div class="alert alert-<%= message_type %>">
+                <%= message %>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-md-7 col-lg-8">
+            <h4 class="mb-3">請求書先住所</h4>
+            <%= form_with model: @order, url: orders_path, data: { "turbo-method": :post } do |form| %>
+              <div class="row g-3">
+                <%= form.fields_for :address do |address_form| %>
+                  <div class="col-sm-6">
+                    <%= address_form.label :first_name, "苗字(姓)", class: "form-label" %>
+                    <%= address_form.text_field :first_name, class: "form-control", required: true %>
+                  </div>
+                  <div class="col-sm-6">
+                    <%= address_form.label :last_name, "名前(名)", class: "form-label" %>
+                    <%= address_form.text_field :last_name, class: "form-control", required: true %>
+                  </div>
+                  <div class="col-12">
+                    <%= address_form.label :user_name, "ユーザー名", class: "form-label" %>
+                    <%= address_form.text_field :user_name, class: "form-control", required: true %>
+                  </div>
+                  <div class="col-12">
+                    <%= address_form.label :email_name, "Email", class: "form-label" %>
+                    <%= address_form.text_field :email_name, class: "form-control", required: true  %>
+                  </div>
+                  <div class="col-12">
+                    <%= address_form.label :address1, "住所", class: "form-label" %>
+                    <%= address_form.text_field :address1, class: "form-control", required: true %>
+                  </div>
+                  <div class="col-12">
+                    <%= address_form.label :address2, "住所 2", class: "form-label" %>
+                    <%= address_form.text_field :address2, class: "form-control" %>
+                  </div>
+                  <div class="col-md-4">
+                    <%= address_form.label :prefectures, "都道府県", class: "form-label" %>
+                    <%= address_form.text_field :prefectures, class: "form-control", required: true %>
+                  </div>
+                  <div class="col-md-3">
+                    <%= address_form.label :post_code, "郵便番号", class: "form-label" %>
+                    <%= address_form.text_field :post_code, class: "form-control", required: true %>
+                  </div>
+                <% end %>
+                <hr class="my-4">
+                <h4 class="mb-3">支払い</h4>
+                <h5 class="mb-3">クレジットカード</h5>
+                <%= form.fields_for :payment do |payment_form| %>
+                  <div class="col-md-6">
+                    <%= payment_form.label :card_name, "名前", class: "form-label" %>
+                    <%= payment_form.text_field :card_name, class: "form-control", required: true %>
+                  </div>
+                  <div class="col-md-6">
+                    <%= payment_form.label :credit_number, "クレジット番号", class: "form-label" %>
+                    <%= payment_form.text_field :credit_number, class: "form-control", required: true %>
+                  </div>
+                  <div class="col-md-3">
+                    <%= payment_form.label :expiration, "期限", class: "form-label" %>
+                    <%= payment_form.text_field :expiration, class: "form-control", required: true %>
+                  </div>
+                  <div class="col-md-3">
+                    <%= payment_form.label :cvv, "CVV", class: "form-label" %>
+                    <%= payment_form.text_field :cvv, class: "form-control", required: true %>
+                  </div>
+                <% end %>
+              </div>
               <hr class="my-4">
-              <h4 class="mb-3">支払い</h4>
-              <h5 class="mb-3">クレジットカード</h5>
-              <%= form.fields_for :payment do |payment_form| %>
-                <div class="col-md-6">
-                  <%= payment_form.label :card_name, "名前", class: "form-label" %>
-                  <%= payment_form.text_field :card_name, class: "form-control", required: true %>
-                </div>
-                <div class="col-md-6">
-                  <%= payment_form.label :credit_number, "クレジット番号", class: "form-label" %>
-                  <%= payment_form.text_field :credit_number, class: "form-control", required: true %>
-                </div>
-                <div class="col-md-3">
-                  <%= payment_form.label :expiration, "期限", class: "form-label" %>
-                  <%= payment_form.text_field :expiration, class: "form-control", required: true %>
-                </div>
-                <div class="col-md-3">
-                  <%= payment_form.label :cvv, "CVV", class: "form-label" %>
-                  <%= payment_form.text_field :cvv, class: "form-control", required: true %>
-                </div>
-              <% end %>
-            </div>
-            <hr class="my-4">
-            <%= form.submit "購入する", class: "w-100 btn btn-primary btn-lg" %>
-          <% end %>
+              <%= form.submit "購入する", class: "w-100 btn btn-primary btn-lg" %>
+            <% end %>
+          </div>
         </div>
-      </div>
-    </main>
-    <footer class="my-5 pt-5 text-body-secondary text-center text-small">
-      <p class="mb-1">&copy; 2017–2023 Company Name</p>
-      <ul class="list-inline">
-        <li class="list-inline-item"><a href="#">Privacy</a></li>
-        <li class="list-inline-item"><a href="#">Terms</a></li>
-        <li class="list-inline-item"><a href="#">Support</a></li>
-      </ul>
-    </footer>
-  </div>
-  <%# <script src="../assets/dist/js/bootstrap.bundle.min.js"></script> %>
-  <%= javascript_include_tag 'bootstrap.bundle.min', 'data-turbolinks-track': 'reload' %>
-  <%# <script src="checkout.js"></script></body> %>
-  <%= javascript_include_tag 'checkout', 'data-turbolinks-track': 'reload' %>
-</html>
+      </main>
+      <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+        <p class="mb-1">&copy; 2017–2023 Company Name</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privacy</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+      </footer>
+    </div>
+    <%# <script src="../assets/dist/js/bootstrap.bundle.min.js"></script> %>
+    <%= javascript_include_tag 'bootstrap.bundle.min', 'data-turbolinks-track': 'reload' %>
+    <%# <script src="checkout.js"></script></body> %>
+    <%= javascript_include_tag 'checkout', 'data-turbolinks-track': 'reload' %>
+  </html>

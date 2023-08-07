@@ -27,6 +27,10 @@
         <% end %>
       </tbody>
     </table>
+    <% if @discount_amount > 0 %>
+      <h3>割引金額: <%= @discount_amount %>円</h3>
+    <% end %>
+    <h3>合計金額: <%= @final_total_price %>円</h3>
     <p>
       またのご利用をお待ちしております。
     </p>

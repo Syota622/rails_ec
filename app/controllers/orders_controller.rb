@@ -6,6 +6,7 @@ class OrdersController < ApplicationController
   def create
     # Orderテーブルに購入者の情報を保存
     @order = Order.new(order_params)
+    # @order.cartへ@cartを代入することで、@orderに紐づくcart_idフィールドに@cartのidが保存されます。
     @order.cart = @cart
 
     # @orderがデータベースに保存され、その際にcart_idフィールドに@cartのidが保存されます。
@@ -19,6 +20,10 @@ class OrdersController < ApplicationController
       # カートを空にする
       clear_cart
 
+      # プロモーションコードが使用済みに更新
+      update_promotion_code
+
+      # 購入完了画面にリダイレクト
       redirect_to products_path, notice: '購入ありがとうございます'
     else
       render :new
@@ -27,10 +32,12 @@ class OrdersController < ApplicationController
 
   private
 
+  # カートを取得する
   def set_cart
     @cart = Cart.find(session[:cart_id])
   end
 
+  # 購入者の情報を取得する
   def order_params
     params.require(:order).permit(
       address_attributes: %i[first_name last_name user_name email_name address1 address2 prefectures post_code],
@@ -38,6 +45,7 @@ class OrdersController < ApplicationController
     )
   end
 
+  # 購入した商品の情報を保存する
   def create_order_items
     @cart.cart_items.each do |item|
       OrderItem.create(
@@ -50,10 +58,32 @@ class OrdersController < ApplicationController
     end
   end
 
+  # 購入者にメールを送信する
   def send_order_confirmation
-    OrderMailer.order_confirmation(@order).deliver_later
+    # セッションからプロモーションコードを取得
+    promo_code = session[:promo_code]
+    # プロモーションコードが存在する場合は、そのプロモーションコードに紐づく割引額を@orderに代入
+    promotion = PromotionCode.find_by(code: promo_code)
+    # メールの出力にプロモーションコードの割引額を渡す
+    discount_amount = if promotion
+                        promotion.discount_amount
+                      else
+                        0
+                      end
+    OrderMailer.order_confirmation(@order, discount_amount).deliver_later
   end
 
+  # プロモーションコードが使用済みに更新する
+  def update_promotion_code
+    # セッションからプロモーションコードを取得
+    promo_code = session[:promo_code]
+    promotion = PromotionCode.find_by(code: promo_code, used: false)
+    return unless promotion
+
+    promotion.update(used: true)
+  end
+
+  # カートを空にする
   def clear_cart
     session[:cart_id] = nil
   end

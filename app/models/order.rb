@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Order < ApplicationRecord
+  attr_accessor :promo_code, :discount_amount
+
   belongs_to :cart
 
   has_many :order_items, dependent: :destroy
